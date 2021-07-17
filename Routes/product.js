@@ -51,7 +51,9 @@ router.get("/read", async (req, res) => {
     })
     .then((product) => {
       console.log(product);
-
+      if (!product) {
+        return res.status(404).json({ message: "does not exist" }); // if product does not exist
+      }
       res.json(product);
     })
     .catch((e) => {
@@ -78,11 +80,14 @@ router.get("/readAll", async (req, res) => {
 
 router.patch("/update", async (req, res) => {
   if (!req.body.updateObject.categoryName) {
-    Product.findByIdAndUpdate(req.body.productId, req.body.updateObject)
+    //checks if categoryName is also passed as update param
+    // if it is not passed it simply update the other property
+    Product.findByIdAndUpdate(req.body.productId, req.body.updateObject) //find product by ID
       .then((product) => {
-        console.log(product);
+        console.log("sadas", product);
+        console.log("ran");
         if (!product) {
-          res.status(404);
+          return res.status(404).json({ message: "does not exist" }); // if product does not exist
         }
         res.json(product);
       })
@@ -90,7 +95,8 @@ router.patch("/update", async (req, res) => {
         res.status(404).json(e);
       });
   } else {
-    Category.findOne({ categoryName: req.body.updateObject.categoryName })
+    // if categoryName is passed as update property
+    Category.findOne({ categoryName: req.body.updateObject.categoryName }) // it looks for any category with name passed as update property
       .then(async (category) => {
         let newCat;
         if (category) {
@@ -112,6 +118,9 @@ router.patch("/update", async (req, res) => {
           category: newCat.id,
         })
           .then((product) => {
+            if (!product) {
+              return res.status(404).json({ message: "does not exist" }); // if product does not exist
+            }
             console.log(product);
 
             res.json(product);
@@ -125,16 +134,18 @@ router.patch("/update", async (req, res) => {
 });
 
 router.delete("/delete", async (req, res) => {
-  Product.findByIdAndDelete(req.body.productId)
+  Product.findByIdAndDelete(req.body.productId) //find product by id and delete it
     .then((product) => {
       console.log(product);
       if (!product) {
-        res.status(404);
+        if (!product) {
+          return res.status(404).json({ message: "does not exist" }); // if product does not exist
+        } // if product does not exist returns 404 code
       }
       res.json(product);
     })
     .catch((e) => {
-      res.json(e);
+      return res.json(e);
     });
 });
 

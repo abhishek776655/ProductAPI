@@ -27,7 +27,7 @@ describe("Products", () => {
       });
   });
   describe("GET /readAll", () => {
-    // Test to get all students record
+    // Test to get all Product record
     it("should get all products", (done) => {
       chai
         .request(app)
@@ -53,6 +53,8 @@ describe("Products", () => {
           done();
         });
     });
+    // Test to get single product record
+
     it("Should not get a single product", (done) => {
       // will cause error as productId is empty
       const id = "";
