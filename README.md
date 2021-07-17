@@ -1,5 +1,12 @@
 # ProductAPI
 
+## Description
+     Tech Stack
+     1. ExpressJs (server)
+     2. MongoDB
+     3. Mongoose ODM (ORM)
+     4. Chai (testing library)
+  
 ## How to run?
      To run server 
      run the following commands
